@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 #include<iostream>
 using namespace std;
-class Component;
-class Edge;
-class Cloudlet
+class Component;//components of an application
+class Edge;//stores the data transfer details between components
+class Cloudlet//Hierarchical fog nodes
 {
     public:
     vector<Component>Compo;
@@ -144,14 +144,14 @@ double computeImpact(GraphMatrix &g,set<Component>M,Cloudlet h)
     double Imp=0;
     for(Component c:M)
     {
-        for(int i=0;i<g.compcount;i++)
+        for(int i=0;i<g.compcount;i++)//for edges for which it is the target
         {
             if(g.adj[c.id-1][i].ind!='X')
             {
                 double k=(g.adj[c.id-1][i].dt*g.adj[c.id-1][i].sel*10)/g.adj[c.id-1][i].period;
                 int flag1=0;
                 int flag2=0;
-                for(Component sa:M)
+                for(Component sa:M)//checking whether the edge is to a component within the same set
                 {
                     if(sa.id==i+1)
                     {
@@ -159,7 +159,7 @@ double computeImpact(GraphMatrix &g,set<Component>M,Cloudlet h)
                         break;
                     }
                 }
-                for(int j=0;j<h.Compo.size();j++)
+                for(int j=0;j<h.Compo.size();j++)//checking whether the edge is to comonent in higher cloudlet
                 {
                     if(i+1==h.Compo[j].id)
                     {
@@ -180,7 +180,7 @@ double computeImpact(GraphMatrix &g,set<Component>M,Cloudlet h)
                 }
             }
         }
-        for(int i=0;i<g.compcount;i++)
+        for(int i=0;i<g.compcount;i++)//for edges for which it is the target
         {
             if(g.adj[i][c.id-1].ind!='X')
             {
